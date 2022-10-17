@@ -50,7 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   screenBoundScale: 1
   useFrameDelay: 1
-  updateFrameDelay: 5
+  updateFrameDelay: 15
   defaultHudPrefab: {fileID: 8647916429557620339, guid: b25b329af63636b4b90e299748941c36, type: 3}
   rootPanel: {fileID: 9120686333978300529}
   uiCanvas: {fileID: 0}

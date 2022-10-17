@@ -1572,7 +1572,7 @@ MonoBehaviour:
     Offset: {x: 0, y: 1, z: 0}
     ClampPointer: 1
     iconSprite: {fileID: 21300000, guid: 55a9894f2e62851409f5c0bf2ef33f7a, type: 3}
-    hideInCloseDistance: 0
+    hideInCloseDistance: 1
     hideCloseDistance: 15
     hideInFarDistance: 0
     hideFarDistance: 15

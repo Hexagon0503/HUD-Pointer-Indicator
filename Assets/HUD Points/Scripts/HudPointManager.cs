@@ -7,7 +7,7 @@ public class HudPointManager : MonoBehaviour
     [Header("Settings")]
     [SerializeField, Range(0.5f, 1f)] private float screenBoundScale = 1;
     [SerializeField] private bool useFrameDelay;
-    [SerializeField] private int updateFrameDelay = 5;
+    [SerializeField, Range(5, 15)] private int updateFrameDelay = 5;
     [Space]
     [Header("References")]
     [SerializeField] private GameObject defaultHudPrefab;
