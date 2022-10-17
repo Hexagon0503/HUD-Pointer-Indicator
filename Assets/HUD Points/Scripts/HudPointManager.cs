@@ -5,6 +5,7 @@ public class HudPointManager : MonoBehaviour
 {
     #region SERIALZIE FIELDS
     [Header("Settings")]
+    [SerializeField, Range(0.5f, 1f)] private float screenBoundScale = 1;
     [SerializeField] private bool useFrameDelay;
     [SerializeField] private int updateFrameDelay = 5;
     [Space]
@@ -142,7 +143,7 @@ public class HudPointManager : MonoBehaviour
     /// <param name="pointer"></param>
     private Vector3 canvasPos;
     private float targetDistance;
-    private bool runtimeUIVisible;
+    private bool visibleInCanvas, pointerVisible;
     private Vector2 canvasSize, runtimeSize, minClamp, maxClamp;
     private void UpdateHudPointer(BaseHudPointerData pointer, bool forceUpdate = false)
     {
@@ -154,13 +155,14 @@ public class HudPointManager : MonoBehaviour
             GetCanvasScale();
         }
         canvasPos = uiCanvas.WorldToCanvas(pointer.target.position + pointer.Offset, gameCamera);
-        runtimeUIVisible = uiCanvas.IsVisible(canvasPos, pointer.runtimeUI.rectTransform.sizeDelta) || pointer.ClampPointer;
-        pointer.runtimeUI.SetActive(runtimeUIVisible);
-        if (runtimeUIVisible)
+        visibleInCanvas = uiCanvas.IsVisible(canvasPos, pointer.runtimeUI.rectTransform.sizeDelta, (pointer.ClampPointer) ? screenBoundScale : 1);
+        pointerVisible = visibleInCanvas || pointer.ClampPointer;
+        pointer.runtimeUI.SetActive(pointerVisible);
+        if (pointerVisible)
         {
             if (pointer.ClampPointer)
             {
-                pointer.runtimeUI.SetOffScreen(GetClampDirection(canvasPos, pointer.runtimeUI));
+                pointer.runtimeUI.SetOffScreen(!visibleInCanvas, GetClampAngle(canvasPos));
                 runtimeSize = pointer.runtimeUI.rectTransform.sizeDelta;
                 minClamp = new Vector2(-canvasSize.x + runtimeSize.x, -canvasSize.y + runtimeSize.y);
                 maxClamp = new Vector2(canvasSize.x - runtimeSize.x, canvasSize.y - runtimeSize.y);
@@ -189,7 +191,7 @@ public class HudPointManager : MonoBehaviour
     {
         if (uiCanvas == null) return;
         //
-        canvasSize = uiCanvas.GetCanvasHalfSize();
+        canvasSize = uiCanvas.GetCanvasHalfSize(screenBoundScale);
     }
     #endregion
 
@@ -212,27 +214,10 @@ public class HudPointManager : MonoBehaviour
     /// 
     /// </summary>
     /// <param name="canvasPos"></param>
-    /// <param name="hudPointUI"></param>
     /// <returns></returns>
-    private int GetClampDirection(Vector3 canvasPos, HudPointUIBase hudPointUI)
+    private float GetClampAngle(Vector3 canvasPos)
     {
-        if (canvasPos.x < -canvasSize.x + hudPointUI.rectTransform.sizeDelta.x)
-        {
-            return 180;
-        }
-        else if (canvasPos.x > canvasSize.x - hudPointUI.rectTransform.sizeDelta.x)
-        {
-            return 0;
-        }
-        else if (canvasPos.y < -canvasSize.y + hudPointUI.rectTransform.sizeDelta.y)
-        {
-            return 270;
-        }
-        else if (canvasPos.y > canvasSize.y - hudPointUI.rectTransform.sizeDelta.y)
-        {
-            return 90;
-        }
-        return -1;
+        return Mathf.Atan2(canvasPos.y, canvasPos.x) * Mathf.Rad2Deg;
     }
     #endregion
 

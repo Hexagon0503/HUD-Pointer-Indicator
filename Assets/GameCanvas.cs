@@ -31,13 +31,13 @@ public class GameCanvas : MonoBehaviour
     /// <param name="canvas"></param>
     /// <param name="anchoredPosition"></param>
     /// <returns></returns>
-    public bool IsVisible(Vector3 canvasPos, Vector2 sizeDelta)
+    public bool IsVisible(Vector3 canvasPos, Vector2 sizeDelta, float boundScale = 1)
     {
         if (canvasPos.z < 0)
         {
             return false;
         }
-        GetCanvasHalfSize();
+        GetCanvasHalfSize(boundScale);
         if (canvasPos.x < (-canvasHalfSize.x + sizeDelta.x * 0.5f) || canvasPos.x > (canvasHalfSize.x - sizeDelta.x * 0.5f) || canvasPos.y < (-canvasHalfSize.y + sizeDelta.y * 0.5f) || (canvasPos.y > canvasHalfSize.y - sizeDelta.y * 0.5f))
         {
             return false;
@@ -50,9 +50,9 @@ public class GameCanvas : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     private Vector2 canvasHalfSize;
-    public Vector2 GetCanvasHalfSize()
+    public Vector2 GetCanvasHalfSize(float boundScale = 1)
     {
-        canvasHalfSize = canvas_rect.sizeDelta * 0.5f;
+        canvasHalfSize = canvas_rect.sizeDelta * boundScale * 0.5f;
         return canvasHalfSize;
     }
     #endregion

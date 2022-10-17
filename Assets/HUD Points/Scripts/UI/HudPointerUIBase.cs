@@ -38,7 +38,7 @@ public abstract class HudPointUIBase : MonoBehaviour
     /// 
     /// </summary>
     /// <param name="active"></param>
-    public abstract void SetOffScreen(float clampDirection);
+    public abstract void SetOffScreen(bool active, float angle);
 
     /// <summary>
     /// 

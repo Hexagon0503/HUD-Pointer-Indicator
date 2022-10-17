@@ -48,8 +48,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd23e67e711ea13429fd5cba0cc17aeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  screenBoundScale: 1
   useFrameDelay: 1
   updateFrameDelay: 5
-  defaultHudPrefab: {fileID: 0}
+  defaultHudPrefab: {fileID: 8647916429557620339, guid: b25b329af63636b4b90e299748941c36, type: 3}
   rootPanel: {fileID: 9120686333978300529}
   uiCanvas: {fileID: 0}
+  gameCamera: {fileID: 0}

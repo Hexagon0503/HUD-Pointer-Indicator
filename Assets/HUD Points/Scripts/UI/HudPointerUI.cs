@@ -29,6 +29,11 @@ public class HudPointerUI : HudPointUIBase
     /// 
     /// </summary>
     private float lastDistance = 0;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    private Vector3 arrowRotation;
     #endregion
 
     #region METHODS
@@ -90,15 +95,15 @@ public class HudPointerUI : HudPointUIBase
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="clampDirection"></param>
-    private Vector3 arrowRotation;
-    public override void SetOffScreen(float clampDirection)
+    /// <param name="active"></param>
+    /// <param name="angle"></param>
+    public override void SetOffScreen(bool active, float angle)
     {
-        showOnOffScreen?.SetActiveOptimized(clampDirection != -1);
-        hideOnOffScreen?.SetActiveOptimized(clampDirection == -1);
-        if (clampDirection != -1)
+        showOnOffScreen?.SetActiveOptimized(active);
+        hideOnOffScreen?.SetActiveOptimized(!active);
+        if (active)
         {
-            arrowRotation.z = clampDirection;
+            arrowRotation.z = angle;
             offScreenArrow.localRotation = Quaternion.Euler(arrowRotation);
         }
     }
