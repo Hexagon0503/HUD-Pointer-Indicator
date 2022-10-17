@@ -523,7 +523,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -1470,6 +1470,7 @@ GameObject:
   - component: {fileID: 2070262725}
   - component: {fileID: 2070262724}
   - component: {fileID: 2070262723}
+  - component: {fileID: 2070262727}
   m_Layer: 0
   m_Name: Target
   m_TagString: Untagged
@@ -1553,6 +1554,29 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 47.24, z: 0}
+--- !u!114 &2070262727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2070262722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2741ea4f0c7b124e81f9d64a4487644, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  info:
+    target: {fileID: 2070262726}
+    pointerPrefab: {fileID: 0}
+    CheckDistance: 1
+    Offset: {x: 0, y: 1, z: 0}
+    ClampPointer: 1
+    iconSprite: {fileID: 21300000, guid: 55a9894f2e62851409f5c0bf2ef33f7a, type: 3}
+    hideInCloseDistance: 0
+    hideCloseDistance: 15
+    hideInFarDistance: 0
+    hideFarDistance: 15
 --- !u!1001 &1505077444436889932
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1587,6 +1611,10 @@ PrefabInstance:
     - target: {fileID: 7568868426755176086, guid: 0a012dd1eaa58944eac82a997d1ae909, type: 3}
       propertyPath: m_Name
       value: WaypointUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 7568868426755176086, guid: 0a012dd1eaa58944eac82a997d1ae909, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7568868426755176087, guid: 0a012dd1eaa58944eac82a997d1ae909, type: 3}
       propertyPath: m_Pivot.x
@@ -1685,6 +1713,14 @@ PrefabInstance:
       propertyPath: uiCanvas
       value: 
       objectReference: {fileID: 575132427}
+    - target: {fileID: 1626721623018391634, guid: 301d031b3f778d24fa6d05b3c2399e01, type: 3}
+      propertyPath: gameCamera
+      value: 
+      objectReference: {fileID: 769839945}
+    - target: {fileID: 1626721623018391634, guid: 301d031b3f778d24fa6d05b3c2399e01, type: 3}
+      propertyPath: defaultHudPrefab
+      value: 
+      objectReference: {fileID: 8647916429557620339, guid: b25b329af63636b4b90e299748941c36, type: 3}
     - target: {fileID: 8753705109166118102, guid: 301d031b3f778d24fa6d05b3c2399e01, type: 3}
       propertyPath: m_Name
       value: HUD Point Manager

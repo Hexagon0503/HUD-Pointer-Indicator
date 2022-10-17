@@ -12,6 +12,7 @@ public class HudPointManager : MonoBehaviour
     [SerializeField] private GameObject defaultHudPrefab;
     [SerializeField] private RectTransform rootPanel;
     [SerializeField] private GameCanvas uiCanvas;
+    [SerializeField] private Camera gameCamera;
     #endregion
 
     #region FIELDS
@@ -51,7 +52,7 @@ public class HudPointManager : MonoBehaviour
     /// </summary>
     public void Update()
     {
-        if (Camera.main == null || runtimePointers.Count < 1)
+        if (gameCamera == null || runtimePointers.Count < 1)
         {
             if (useFrameDelay)
                 currentFrame = 0;
@@ -115,6 +116,7 @@ public class HudPointManager : MonoBehaviour
     /// </summary>
     public void UpdatePointers()
     {
+        GetCanvasScale();
         foreach (BaseHudPointerData pointer in runtimePointers.Values)
         {
             UpdateHudPointer(pointer);
@@ -139,25 +141,33 @@ public class HudPointManager : MonoBehaviour
     /// </summary>
     /// <param name="pointer"></param>
     private Vector3 canvasPos;
-    private float distance;
-    private bool isVisible;
+    private float targetDistance;
+    private bool runtimeUIVisible;
+    private Vector2 canvasSize, runtimeSize, minClamp, maxClamp;
     private void UpdateHudPointer(BaseHudPointerData pointer, bool forceUpdate = false)
     {
         if (pointer.target == null || pointer.runtimeUI == null) return;
-
         //
         if (forceUpdate)
         {
             pointer.runtimeUI.SetAlpha(HudAlpha);
+            GetCanvasScale();
         }
-        canvasPos = uiCanvas.WorldToCanvas(pointer.target.position + pointer.Offset, Camera.main);
-        isVisible = uiCanvas.IsVisible(canvasPos, pointer.runtimeUI.rectTransform.sizeDelta) && !pointer.ClampPointer;
-        pointer.runtimeUI.SetActive(isVisible);
-        if (isVisible)
+        canvasPos = uiCanvas.WorldToCanvas(pointer.target.position + pointer.Offset, gameCamera);
+        runtimeUIVisible = uiCanvas.IsVisible(canvasPos, pointer.runtimeUI.rectTransform.sizeDelta) || pointer.ClampPointer;
+        pointer.runtimeUI.SetActive(runtimeUIVisible);
+        if (runtimeUIVisible)
         {
             if (pointer.ClampPointer)
             {
                 pointer.runtimeUI.SetOffScreen(GetClampDirection(canvasPos, pointer.runtimeUI));
+                runtimeSize = pointer.runtimeUI.rectTransform.sizeDelta;
+                minClamp = new Vector2(-canvasSize.x + runtimeSize.x, -canvasSize.y + runtimeSize.y);
+                maxClamp = new Vector2(canvasSize.x - runtimeSize.x, canvasSize.y - runtimeSize.y);
+
+                //Clamp
+                canvasPos.x = Mathf.Clamp(canvasPos.x, minClamp.x, maxClamp.x);
+                canvasPos.y = Mathf.Clamp(canvasPos.y, minClamp.y, maxClamp.y);
             }
             pointer.runtimeUI.SetAnchoredPosition(canvasPos);
             if (pointer.customData != null)
@@ -166,10 +176,20 @@ public class HudPointManager : MonoBehaviour
             }
             if (pointer.CheckDistance)
             {
-                distance = Vector3.Distance(Camera.main.transform.position, pointer.target.position);
-                pointer.runtimeUI.SetDistance(distance);
+                targetDistance = Vector3.Distance(gameCamera.transform.position, pointer.target.position);
+                pointer.runtimeUI.SetDistance(targetDistance);
             }
         }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    private void GetCanvasScale()
+    {
+        if (uiCanvas == null) return;
+        //
+        canvasSize = uiCanvas.GetCanvasHalfSize();
     }
     #endregion
 
@@ -196,7 +216,6 @@ public class HudPointManager : MonoBehaviour
     /// <returns></returns>
     private int GetClampDirection(Vector3 canvasPos, HudPointUIBase hudPointUI)
     {
-        Vector2 canvasSize = uiCanvas.GetCanvasHalfSize();
         if (canvasPos.x < -canvasSize.x + hudPointUI.rectTransform.sizeDelta.x)
         {
             return 180;

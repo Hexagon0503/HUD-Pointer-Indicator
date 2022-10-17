@@ -8,6 +8,10 @@ public class HudPointerUI : HudPointUIBase
     [SerializeField] private GameObject rootUI;
     [SerializeField] private Image iconImage;
     [SerializeField] private TextMeshProUGUI distanceText;
+    [Header("Off Screen")]
+    [SerializeField] private GameObject showOnOffScreen;
+    [SerializeField] private GameObject hideOnOffScreen;
+    [SerializeField] private RectTransform offScreenArrow;
     #endregion
 
     #region FIELDS
@@ -20,6 +24,11 @@ public class HudPointerUI : HudPointUIBase
     /// 
     /// </summary>
     private bool distanceActive = true;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    private float lastDistance = 0;
     #endregion
 
     #region METHODS
@@ -56,20 +65,24 @@ public class HudPointerUI : HudPointUIBase
     /// <param name="distance"></param>
     public override bool SetDistance(float distance)
     {
-        if(distanceText)
+        if (lastDistance != distance)
         {
-            distanceText.text = $"{distance.ToString("F0")}m";
-        }
-        if (hudData != null)
-        {
-            if (hudData.hideInCloseDistance && distance <= hudData.hideCloseDistance || hudData.hideInFarDistance && distance >= hudData.hideFarDistance)
+            if (distanceText)
             {
-                distanceActive = false;
+                distanceText.text = $"{distance.ToString("F0")}m";
             }
-            else
+            if (hudData != null)
             {
-                distanceActive = true;
+                if (hudData.hideInCloseDistance && distance <= hudData.hideCloseDistance || hudData.hideInFarDistance && distance >= hudData.hideFarDistance)
+                {
+                    distanceActive = false;
+                }
+                else
+                {
+                    distanceActive = true;
+                }
             }
+            lastDistance = distance;
         }
         return distanceActive;
     }
@@ -78,9 +91,16 @@ public class HudPointerUI : HudPointUIBase
     /// 
     /// </summary>
     /// <param name="clampDirection"></param>
+    private Vector3 arrowRotation;
     public override void SetOffScreen(float clampDirection)
     {
-
+        showOnOffScreen?.SetActiveOptimized(clampDirection != -1);
+        hideOnOffScreen?.SetActiveOptimized(clampDirection == -1);
+        if (clampDirection != -1)
+        {
+            arrowRotation.z = clampDirection;
+            offScreenArrow.localRotation = Quaternion.Euler(arrowRotation);
+        }
     }
 
     /// <summary>
