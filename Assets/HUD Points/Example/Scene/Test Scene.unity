@@ -1269,7 +1269,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1625760207}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 769839943}
@@ -1285,7 +1285,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1625760207}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: ad2a1a662e91eb441bfe799b44f79673, type: 2}
   m_CullingMode: 0
@@ -1546,13 +1546,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2070262722}
-  m_LocalRotation: {x: 0, y: 0.40066892, z: 0, w: 0.91622293}
-  m_LocalPosition: {x: 0, y: 0.5, z: 11.4}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.5, z: 17.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 47.24, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2070262727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1572,7 +1572,7 @@ MonoBehaviour:
     Offset: {x: 0, y: 1, z: 0}
     ClampPointer: 1
     iconSprite: {fileID: 21300000, guid: 55a9894f2e62851409f5c0bf2ef33f7a, type: 3}
-    hideInCloseDistance: 1
+    hideInCloseDistance: 0
     hideCloseDistance: 15
     hideInFarDistance: 0
     hideFarDistance: 15

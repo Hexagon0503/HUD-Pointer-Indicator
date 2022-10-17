@@ -12,6 +12,9 @@ public class HudPointerUI : HudPointUIBase
     [SerializeField] private GameObject showOnOffScreen;
     [SerializeField] private GameObject hideOnOffScreen;
     [SerializeField] private RectTransform offScreenArrow;
+    [Header("Scale by Distance")]
+    [SerializeField] private Vector2 minMaxDistance = new Vector2(7.5f, 15f);
+    [SerializeReference] private float minScale = 0.75f;
     #endregion
 
     #region FIELDS
@@ -61,7 +64,7 @@ public class HudPointerUI : HudPointUIBase
     /// <param name="active"></param>
     public override void SetActive(bool active)
     {
-        rootUI.SetActive(active && distanceActive);
+        rootUI.SetActiveOptimized(active && distanceActive);
     }
 
     /// <summary>
@@ -72,6 +75,8 @@ public class HudPointerUI : HudPointUIBase
     {
         if (lastDistance != distance)
         {
+            float percent = (distance - minMaxDistance.x) / (minMaxDistance.y - minMaxDistance.x) ;
+            rectTransform.localScale = Vector3.one * Mathf.Lerp(minScale, 1, 1 - percent);
             if (distanceText)
             {
                 distanceText.text = $"{distance.ToString("F0")}m";
