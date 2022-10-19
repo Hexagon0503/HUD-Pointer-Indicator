@@ -13,6 +13,7 @@ public class HudPointerUI : HudPointUIBase
     [SerializeField] private GameObject hideOnOffScreen;
     [SerializeField] private RectTransform offScreenArrow;
     [Header("Scale by Distance")]
+    [SerializeField] private bool scaleByDistance = false;
     [SerializeField] private Vector2 minMaxDistance = new Vector2(7.5f, 15f);
     [SerializeReference] private float minScale = 0.75f;
     #endregion
@@ -31,7 +32,17 @@ public class HudPointerUI : HudPointUIBase
     /// <summary>
     /// 
     /// </summary>
+    private float distanceScalePercent;
+
+    /// <summary>
+    /// 
+    /// </summary>
     private float lastDistance = 0;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    private bool onOffScreen;
 
     /// <summary>
     /// 
@@ -75,8 +86,11 @@ public class HudPointerUI : HudPointUIBase
     {
         if (lastDistance != distance)
         {
-            float percent = (distance - minMaxDistance.x) / (minMaxDistance.y - minMaxDistance.x) ;
-            rectTransform.localScale = Vector3.one * Mathf.Lerp(minScale, 1, 1 - percent);
+            if (scaleByDistance)
+            {
+                distanceScalePercent = (distance - minMaxDistance.x) / (minMaxDistance.y - minMaxDistance.x);
+                rectTransform.localScale = Vector3.one * Mathf.Lerp(minScale, 1, 1 - distanceScalePercent);
+            }
             if (distanceText)
             {
                 distanceText.text = $"{distance.ToString("F0")}m";
@@ -102,14 +116,18 @@ public class HudPointerUI : HudPointUIBase
     /// </summary>
     /// <param name="active"></param>
     /// <param name="angle"></param>
-    public override void SetOffScreen(bool active, float angle)
+    public override void SetOffScreen(bool active, float angle = 0)
     {
-        showOnOffScreen?.SetActiveOptimized(active);
-        hideOnOffScreen?.SetActiveOptimized(!active);
-        if (active)
+        if (onOffScreen != active)
         {
-            arrowRotation.z = angle;
-            offScreenArrow.localRotation = Quaternion.Euler(arrowRotation);
+            showOnOffScreen?.SetActiveOptimized(active);
+            hideOnOffScreen?.SetActiveOptimized(!active);
+            if (active)
+            {
+                arrowRotation.z = angle;
+                offScreenArrow.localRotation = Quaternion.Euler(arrowRotation);
+            }
+            onOffScreen = active;
         }
     }
 
@@ -125,8 +143,10 @@ public class HudPointerUI : HudPointUIBase
     public override void ResetUI()
     {
         hudData = null;
-        distanceActive = false;
         iconImage.sprite = null;
+        distanceActive = false;
+        onOffScreen = false;
+        lastDistance = -1;
         distanceText.gameObject.SetActive(false);
     }
     #endregion

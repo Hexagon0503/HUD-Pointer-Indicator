@@ -502,5 +502,6 @@ MonoBehaviour:
   showOnOffScreen: {fileID: 426307464388752665}
   hideOnOffScreen: {fileID: 426307463904200186}
   offScreenArrow: {fileID: 426307464388752664}
+  scaleByDistance: 1
   minMaxDistance: {x: 7.5, y: 17.5}
   minScale: 0.75
